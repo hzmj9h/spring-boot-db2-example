@@ -1,0 +1,122 @@
+
+/**
+ * Group entity.
+ * @author GTG team.
+ */
+entity Group{
+	groupId String,
+    schoolYear String,
+    schoolId String,
+    aluminiId String,
+    eventId String
+}
+
+/**
+ * Alumini entity.
+ * @author GTG team.
+ */
+
+entity Alumini {
+	aluminiID String,
+    recoveryEmail String,
+    fullName String,
+    addressId String,
+    addressType String,
+    aluminiPhotoFilename String,
+    aluminiMaritialStatus String,
+    aluminiKidsCount Integer,
+    aluminiDOB String,
+    schoolID String
+}
+
+/**
+ * Address entity.
+ * @author GTG team.
+ */
+
+entity Address {
+	id String,
+    type String,
+    addressName String,
+	streetAddress String,
+	postalCode String,
+	city String,
+	stateProvince String,
+    country String
+}
+
+/**
+ * geoAddress entity.
+ * @author GTG team.
+ */
+
+entity GEO {
+	geoId String
+    type String,
+	content String
+}
+/**
+ * School entity.
+ * @author GTG team.
+ */
+
+entity School{
+	schoolID String,
+    schoolType String,
+    schoolName String,
+    geoAddressId String,
+    addressType String
+}
+
+/**
+ * Event entity.
+ * @author GTG team.
+ */
+
+entity Event{
+	groupID String
+	eventID String,
+    aluminiID String,
+    externalCoordinator String,
+    externalCoordinatorPhoneNumber String,
+    eventDateTime Date,
+    eventAddressId String,
+    addressType String,
+    eventDetails String,
+    responseType String,
+    eventContribution Long
+}
+
+entity EventTransaction{
+	eventId String,
+    eventActualExpenditure Long,    
+    eventExpenditureEstimate Long,
+}
+
+
+relationship OneToOne {
+    Alumini{addressID} to Address
+    School{schoolAdressIdaddressType} to Address
+    Event{eventAddressIdaddressType} to Address
+    Event{eventId} to EventTransaction
+}
+
+relationship ManyToMany {
+	Alumini{schoolID} to School{schoolID}
+	Alumini{eventID} to Event{eventID}
+    Group{schoolID} to School{schoolID}
+    Group{aluminiID} to Alumini{aluminiID}
+}
+
+relationship OneToMany {
+	Group{eventID} to Event{eventID}
+}
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl 
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
